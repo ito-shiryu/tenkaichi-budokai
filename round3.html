@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1200">
+<title>天下一武道会 第三回</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700;900&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red: #C0392B;
+  --red-dark: #7B241C;
+  --red-bright: #E74C3C;
+  --gold: #D4AF37;
+  --gold-light: #F5D060;
+  --ink: #0D0D0D;
+  --ink-mid: #1A1A1A;
+  --white: #FDFBF7;
+  --shadow-red: rgba(192,57,43,0.4);
+  --shadow-gold: rgba(212,175,55,0.4);
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Noto Sans JP', sans-serif;
+  background: radial-gradient(ellipse at 50% 50%, #050813 0%, #0D0D0D 60%, #000 100%);
+  color: var(--white);
+  width: 1200px;
+  margin: 0 auto;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--ink); }
+::-webkit-scrollbar-thumb { background: var(--red); border-radius: 3px; }
+
+/* ===== ROUND NAV ===== */
+.round-nav {
+  position: fixed;
+  top: 24px;
+  right: 32px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 9999;
+  background: rgba(13,13,13,0.75);
+  border: 1px solid rgba(212,175,55,0.2);
+  backdrop-filter: blur(12px);
+  padding: 8px 12px;
+  border-radius: 40px;
+}
+
+.round-nav-label {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  color: rgba(255,255,255,0.3);
+  padding: 0 6px 0 4px;
+  white-space: nowrap;
+}
+
+.round-nav-btn {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  padding: 7px 16px;
+  border-radius: 24px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+  display: inline-block;
+}
+
+.round-nav-btn.current {
+  background: linear-gradient(135deg, var(--gold), #B8962E);
+  color: var(--ink);
+  border-color: var(--gold);
+  box-shadow: 0 0 12px var(--shadow-gold);
+  pointer-events: none;
+}
+
+.round-nav-btn.upcoming {
+  background: transparent;
+  color: rgba(255,255,255,0.4);
+  border-color: rgba(255,255,255,0.12);
+}
+
+.round-nav-btn.upcoming:hover {
+  background: rgba(192,57,43,0.1);
+  color: var(--red-bright);
+  border-color: rgba(192,57,43,0.4);
+  box-shadow: 0 0 12px var(--shadow-red);
+}
+
+/* ===== CANVAS ===== */
+#bg-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ===== SPEED LINES ===== */
+.speed-lines {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.07;
+  z-index: 1;
+}
+
+/* ===== MAIN ===== */
+.main {
+  position: relative;
+  z-index: 10;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 60px;
+}
+
+.main::before {
+  content: '';
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(212,175,55,0.08) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 2;
+  animation: pulseGlow 4s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+}
+
+.round-num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.5em;
+  color: var(--gold);
+  border: 1px solid rgba(212,175,55,0.4);
+  padding: 8px 28px;
+  margin-bottom: 52px;
+  display: inline-block;
+  background: rgba(212,175,55,0.05);
+  backdrop-filter: blur(4px);
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% { border-color: rgba(212,175,55,0.4); box-shadow: none; }
+  50% { border-color: rgba(212,175,55,0.9); box-shadow: 0 0 20px var(--shadow-gold), 0 0 40px var(--shadow-gold); }
+}
+
+.coming-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 88px;
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  text-shadow: 4px 4px 0 var(--red-dark), 0 0 80px rgba(255,255,255,0.04);
+  margin-bottom: 24px;
+  animation: titleFloat 6s ease-in-out infinite;
+}
+
+@keyframes titleFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.coming-title span {
+  display: block;
+  font-size: 64px;
+  color: var(--gold-light);
+  text-shadow: 3px 3px 0 var(--red-dark), 0 0 60px var(--shadow-gold);
+  margin-top: 4px;
+}
+
+.coming-sub {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 0.5em;
+  margin-top: 40px;
+  animation: subPulse 3s ease-in-out infinite;
+}
+
+@keyframes subPulse {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 0.6; }
+}
+
+.coming-dots {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 48px;
+}
+
+.coming-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--gold);
+  opacity: 0.3;
+  animation: dotPulse 1.5s ease-in-out infinite;
+}
+.coming-dot:nth-child(2) { animation-delay: 0.3s; }
+.coming-dot:nth-child(3) { animation-delay: 0.6s; }
+
+@keyframes dotPulse {
+  0%, 100% { opacity: 0.2; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.4); background: var(--gold-light); }
+}
+
+.back-link {
+  margin-top: 64px;
+  font-family: 'Noto Serif JP', serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  color: rgba(255,255,255,0.25);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: color 0.25s ease;
+}
+.back-link::before {
+  content: '←';
+  font-size: 16px;
+  transition: transform 0.25s ease;
+}
+.back-link:hover { color: var(--gold); }
+.back-link:hover::before { transform: translateX(-4px); }
+
+.deco-text {
+  position: fixed;
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 900;
+  color: rgba(255,255,255,0.02);
+  pointer-events: none;
+  user-select: none;
+  z-index: 3;
+}
+.deco-text-1 { top: 8%; left: 4%; font-size: 140px; transform: rotate(-10deg); }
+.deco-text-2 { bottom: 8%; right: 4%; font-size: 120px; transform: rotate(8deg); }
+</style>
+</head>
+<body>
+
+<!-- ===== ROUND NAV ===== -->
+<nav class="round-nav">
+  <span class="round-nav-label">武道会</span>
+  <a class="round-nav-btn upcoming" href="index.html">第一回</a>
+  <a class="round-nav-btn upcoming" href="round2.html">第二回</a>
+  <span class="round-nav-btn current">第三回</span>
+</nav>
+
+<canvas id="bg-canvas"></canvas>
+
+<svg class="speed-lines" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
+  <g transform="translate(600,400)" stroke="white" stroke-width="0.6" fill="none">
+    <line x1="0" y1="0" x2="-800" y2="-600"/><line x1="0" y1="0" x2="-700" y2="-520"/>
+    <line x1="0" y1="0" x2="-600" y2="-480"/><line x1="0" y1="0" x2="-500" y2="-450"/>
+    <line x1="0" y1="0" x2="-400" y2="-430"/><line x1="0" y1="0" x2="-300" y2="-420"/>
+    <line x1="0" y1="0" x2="-200" y2="-420"/><line x1="0" y1="0" x2="-100" y2="-430"/>
+    <line x1="0" y1="0" x2="100" y2="-430"/><line x1="0" y1="0" x2="200" y2="-420"/>
+    <line x1="0" y1="0" x2="300" y2="-420"/><line x1="0" y1="0" x2="400" y2="-430"/>
+    <line x1="0" y1="0" x2="500" y2="-450"/><line x1="0" y1="0" x2="600" y2="-480"/>
+    <line x1="0" y1="0" x2="700" y2="-520"/><line x1="0" y1="0" x2="800" y2="-600"/>
+    <line x1="0" y1="0" x2="-800" y2="600"/><line x1="0" y1="0" x2="-700" y2="520"/>
+    <line x1="0" y1="0" x2="-600" y2="480"/><line x1="0" y1="0" x2="-500" y2="450"/>
+    <line x1="0" y1="0" x2="-400" y2="430"/><line x1="0" y1="0" x2="-300" y2="420"/>
+    <line x1="0" y1="0" x2="-200" y2="420"/><line x1="0" y1="0" x2="-100" y2="430"/>
+    <line x1="0" y1="0" x2="100" y2="430"/><line x1="0" y1="0" x2="200" y2="420"/>
+    <line x1="0" y1="0" x2="300" y2="420"/><line x1="0" y1="0" x2="400" y2="430"/>
+    <line x1="0" y1="0" x2="500" y2="450"/><line x1="0" y1="0" x2="600" y2="480"/>
+    <line x1="0" y1="0" x2="700" y2="520"/><line x1="0" y1="0" x2="800" y2="600"/>
+    <line x1="0" y1="0" x2="-800" y2="0"/><line x1="0" y1="0" x2="800" y2="0"/>
+    <line x1="0" y1="0" x2="-800" y2="200"/><line x1="0" y1="0" x2="800" y2="200"/>
+    <line x1="0" y1="0" x2="-800" y2="-200"/><line x1="0" y1="0" x2="800" y2="-200"/>
+    <line x1="0" y1="0" x2="-800" y2="400"/><line x1="0" y1="0" x2="800" y2="400"/>
+    <line x1="0" y1="0" x2="-800" y2="-400"/><line x1="0" y1="0" x2="800" y2="-400"/>
+  </g>
+</svg>
+
+<div class="deco-text deco-text-1">第</div>
+<div class="deco-text deco-text-2">三</div>
+
+<main class="main">
+  <div class="round-num">ガチンコ天下一武道会　第三回</div>
+  <div class="coming-title">
+    COMING
+    <span>SOON</span>
+  </div>
+  <div class="coming-sub">準備中</div>
+  <div class="coming-dots">
+    <div class="coming-dot"></div>
+    <div class="coming-dot"></div>
+    <div class="coming-dot"></div>
+  </div>
+  <a class="back-link" href="index.html">第一回を見る</a>
+</main>
+
+<script>
+(function() {
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+
+  function resize() {
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const particles = [];
+  for (let i = 0; i < 60; i++) {
+    particles.push({
+      x: Math.random() * 1200,
+      y: Math.random() * 900,
+      r: Math.random() * 1.5 + 0.3,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3,
+      alpha: Math.random() * 0.4 + 0.1,
+      color: Math.random() > 0.5 ? '#D4AF37' : '#C0392B',
+      pulse: Math.random() * Math.PI * 2,
+      pulseSpeed: Math.random() * 0.02 + 0.008,
+    });
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+      p.pulse += p.pulseSpeed;
+      const alpha = p.alpha * (0.5 + 0.5 * Math.sin(p.pulse));
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.color + Math.floor(alpha * 255).toString(16).padStart(2, '0');
+      ctx.fill();
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.x < 0) p.x = canvas.width;
+      if (p.x > canvas.width) p.x = 0;
+      if (p.y < 0) p.y = canvas.height;
+      if (p.y > canvas.height) p.y = 0;
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+</script>
+</body>
+</html>
