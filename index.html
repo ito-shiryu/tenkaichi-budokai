@@ -268,7 +268,7 @@ h2.section-title::after {
   93% { opacity: 0.7; }
   94% { opacity: 1; }
   96% { opacity: 0.8; }
-  97% { opacity: 1; }
+  100% { opacity: 1; }
 }
 
 /* 漫画的コマ演出 */
@@ -662,21 +662,11 @@ h2.section-title::after {
   font-weight: 700;
   line-height: 2;
   position: relative;
-  padding-left: 28px;
+  padding-left: 0;
 }
 .nari-card .impression-quote { color: rgba(255,255,255,0.6); }
 .stretch-card .impression-quote { color: var(--white); }
 
-.impression-quote::before {
-  content: '「';
-  position: absolute;
-  left: 0;
-  top: -4px;
-  font-size: 40px;
-  line-height: 1;
-}
-.nari-card .impression-quote::before { color: rgba(255,255,255,0.2); }
-.stretch-card .impression-quote::before { color: var(--gold); text-shadow: 0 0 20px var(--shadow-gold); }
 
 .bridge-text {
   font-family: 'Noto Serif JP', serif;
@@ -1108,6 +1098,15 @@ h2.section-title::after {
 .scenario-stretch .scenario-diff-card { border-left-color: var(--gold); }
 .scenario-stretch .scenario-diff-card .scenario-item-title { color: var(--gold); }
 
+/* ===== TURNING POINT GRID ===== */
+.turning-point-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 14px; }
+.tp-col { padding: 14px 16px; background: var(--washi); border-top: 2px solid rgba(61,61,61,0.3); }
+.tp-col-title { font-family: 'Noto Serif JP', serif; font-size: 12px; font-weight: 900; color: var(--ink); margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid rgba(61,61,61,0.15); line-height: 1.5; }
+.tp-section-label { font-family: 'Noto Sans JP', sans-serif; font-size: 9px; font-weight: 700; letter-spacing: 0.2em; color: var(--red); margin-top: 10px; margin-bottom: 5px; }
+.tp-section-label:first-of-type { margin-top: 0; }
+.tp-items { list-style: none; font-size: 11px; line-height: 1.8; color: var(--ink-light); padding: 0; margin: 0; }
+.tp-items li::before { content: "・"; }
+
 /* ===== DECLARATION BANNER ===== */
 .declaration-banner {
   background: linear-gradient(135deg, var(--ink) 0%, #1a0505 100%);
@@ -1239,6 +1238,56 @@ h2.section-title::after {
   color: rgba(212,175,55,0.4);
   letter-spacing: 0.15em;
 }
+
+/* ===== GROWTH CHART ===== */
+.growth-chart {
+  margin-bottom: 52px;
+  background: var(--white);
+  border: 1px solid var(--washi-dark);
+  padding: 12px 12px 4px;
+  box-shadow: 6px 6px 0 rgba(0,0,0,0.12);
+}
+.chart-axis { stroke: var(--ink-light); stroke-width: 1.5; fill: none; }
+.chart-grid { stroke: var(--washi-dark); stroke-width: 1; fill: none; stroke-dasharray: 4,3; }
+.chart-label { font-family: 'Noto Sans JP', sans-serif; font-size: 11px; fill: var(--ink-light); }
+.chart-now-line { stroke: var(--red); stroke-width: 1.5; stroke-dasharray: 5,3; fill: none; }
+
+/* デフォルト: ナリが強調状態 */
+#chart-stretch-line {
+  stroke: var(--gold); stroke-width: 2; fill: none;
+  opacity: 0.25;
+  transition: opacity 0.5s ease, stroke-width 0.5s ease;
+}
+#chart-nari-line {
+  stroke: var(--red); stroke-width: 3.5; fill: none;
+  opacity: 1;
+  transition: opacity 0.5s ease, stroke-width 0.5s ease;
+}
+#chart-stretch-fill { fill: url(#grad-stretch); opacity: 0.08; transition: opacity 0.5s ease; }
+#chart-nari-fill    { fill: url(#grad-nari);    opacity: 0.65; transition: opacity 0.5s ease; }
+#chart-stretch-dot  { fill: var(--gold); opacity: 0.25; transition: opacity 0.5s ease; }
+#chart-nari-dot     { fill: var(--red);  opacity: 1;    transition: opacity 0.5s ease; }
+#chart-stretch-endlabel { fill: var(--gold); opacity: 0.25; transition: opacity 0.5s ease; }
+#chart-nari-endlabel    { fill: var(--red);  opacity: 1;    transition: opacity 0.5s ease; }
+
+/* active/dim クラス */
+.chart-active-stretch #chart-stretch-line { opacity: 1; stroke-width: 3.5; }
+.chart-active-stretch #chart-nari-line    { opacity: 0.2; stroke-width: 1.5; }
+.chart-active-stretch #chart-stretch-fill { opacity: 0.65; }
+.chart-active-stretch #chart-nari-fill    { opacity: 0.06; }
+.chart-active-stretch #chart-stretch-dot  { opacity: 1; }
+.chart-active-stretch #chart-nari-dot     { opacity: 0.2; }
+.chart-active-stretch #chart-stretch-endlabel { opacity: 1; }
+.chart-active-stretch #chart-nari-endlabel    { opacity: 0.2; }
+
+.chart-active-nari #chart-nari-line     { opacity: 1; stroke-width: 3.5; }
+.chart-active-nari #chart-stretch-line  { opacity: 0.2; stroke-width: 1.5; }
+.chart-active-nari #chart-nari-fill     { opacity: 0.65; }
+.chart-active-nari #chart-stretch-fill  { opacity: 0.06; }
+.chart-active-nari #chart-nari-dot      { opacity: 1; }
+.chart-active-nari #chart-stretch-dot   { opacity: 0.2; }
+.chart-active-nari #chart-nari-endlabel     { opacity: 1; }
+.chart-active-nari #chart-stretch-endlabel  { opacity: 0.2; }
 </style>
 </head>
 <body>
@@ -1372,6 +1421,83 @@ h2.section-title::after {
   <div class="section-label fade-in">課題 ①</div>
   <h2 class="section-title fade-in">1年後の伊藤士竜、どっちだ</h2>
 
+  <!-- ===== 成長グラフ ===== -->
+  <div class="growth-chart fade-in chart-active-nari" id="growth-chart-wrap">
+    <svg id="growth-svg" viewBox="0 0 900 310" width="100%" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <linearGradient id="grad-stretch" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#D4AF37" stop-opacity="0.4"/>
+          <stop offset="100%" stop-color="#D4AF37" stop-opacity="0.01"/>
+        </linearGradient>
+        <linearGradient id="grad-nari" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#C0392B" stop-opacity="0.35"/>
+          <stop offset="100%" stop-color="#C0392B" stop-opacity="0.01"/>
+        </linearGradient>
+      </defs>
+
+      <!-- Y軸グリッド -->
+      <line class="chart-grid" x1="70" y1="215" x2="820" y2="215"/>
+      <line class="chart-grid" x1="70" y1="170" x2="820" y2="170"/>
+      <line class="chart-grid" x1="70" y1="125" x2="820" y2="125"/>
+      <line class="chart-grid" x1="70" y1="80"  x2="820" y2="80"/>
+      <line class="chart-grid" x1="70" y1="35"  x2="820" y2="35"/>
+
+      <!-- Y軸ラベル -->
+      <text class="chart-label" x="60" y="219" text-anchor="end">20%</text>
+      <text class="chart-label" x="60" y="174" text-anchor="end">40%</text>
+      <text class="chart-label" x="60" y="129" text-anchor="end">60%</text>
+      <text class="chart-label" x="60" y="84"  text-anchor="end">80%</text>
+      <text class="chart-label" x="60" y="39"  text-anchor="end">100%</text>
+
+      <!-- X軸ラベル (月数) -->
+      <text class="chart-label" x="70"  y="278" text-anchor="middle">0</text>
+      <text class="chart-label" x="195" y="278" text-anchor="middle">2</text>
+      <text class="chart-label" x="320" y="278" text-anchor="middle">4</text>
+      <text class="chart-label" x="445" y="278" text-anchor="middle">6</text>
+      <text class="chart-label" x="570" y="278" text-anchor="middle">8</text>
+      <text class="chart-label" x="695" y="278" text-anchor="middle">10</text>
+      <text class="chart-label" x="820" y="278" text-anchor="middle">12</text>
+      <text class="chart-label" x="445" y="298" text-anchor="middle" letter-spacing="2">月数（ヶ月）</text>
+      <text class="chart-label" x="18"  y="148" text-anchor="middle" transform="rotate(-90,18,148)">達成度合い</text>
+
+      <!-- 軸 -->
+      <line class="chart-axis" x1="70" y1="35"  x2="70"  y2="262"/>
+      <line class="chart-axis" x1="68" y1="260" x2="825" y2="260"/>
+
+      <!-- 現在地マーカー (2ヶ月目) -->
+      <line class="chart-now-line" x1="195" y1="35" x2="195" y2="260"/>
+      <text x="195" y="24" text-anchor="middle" font-family="'Noto Serif JP',serif" font-size="10" font-weight="700" fill="#C0392B">現在</text>
+
+      <!-- Fill areas -->
+      <path id="chart-stretch-fill"
+        d="M 70,260 C 120,250 160,235 195,222 C 245,205 285,182 320,175 C 370,158 408,138 445,130 C 490,118 530,100 570,87 C 612,73 652,60 695,55 C 740,46 782,36 820,35 L 820,260 L 70,260 Z"/>
+      <path id="chart-nari-fill"
+        d="M 70,260 C 100,252 118,243 132,238 C 155,231 178,227 195,226 C 217,225 240,225 257,226 C 278,224 302,217 320,213 C 342,208 363,205 382,204 C 403,202 426,200 445,199 C 463,199 486,203 507,204 C 527,202 550,194 570,190 C 592,184 614,179 632,175 C 654,170 675,165 695,163 C 718,158 738,153 757,150 C 779,144 803,131 820,125 L 820,260 L 70,260 Z"/>
+
+      <!-- Lines -->
+      <path id="chart-stretch-line"
+        d="M 70,260 C 120,250 160,235 195,222 C 245,205 285,182 320,175 C 370,158 408,138 445,130 C 490,118 530,100 570,87 C 612,73 652,60 695,55 C 740,46 782,36 820,35"/>
+      <path id="chart-nari-line"
+        d="M 70,260 C 100,252 118,243 132,238 C 155,231 178,227 195,226 C 217,225 240,225 257,226 C 278,224 302,217 320,213 C 342,208 363,205 382,204 C 403,202 426,200 445,199 C 463,199 486,203 507,204 C 527,202 550,194 570,190 C 592,184 614,179 632,175 C 654,170 675,165 695,163 C 718,158 738,153 757,150 C 779,144 803,131 820,125"/>
+
+      <!-- 終点ドット -->
+      <circle id="chart-stretch-dot" cx="820" cy="35"  r="5"/>
+      <circle id="chart-nari-dot"    cx="820" cy="125" r="5"/>
+
+      <!-- 終点ラベル -->
+      <text id="chart-stretch-endlabel" x="830" y="39"  font-family="'Noto Serif JP',serif" font-size="12" font-weight="700">100%</text>
+      <text id="chart-nari-endlabel"    x="830" y="129" font-family="'Noto Serif JP',serif" font-size="12" font-weight="700">60%</text>
+
+      <!-- 凡例 -->
+      <line x1="590" y1="16" x2="612" y2="16" stroke="#D4AF37" stroke-width="3"/>
+      <circle cx="601" cy="16" r="3" fill="#D4AF37"/>
+      <text x="618" y="20" font-family="'Noto Serif JP',serif" font-size="11" font-weight="700" fill="#D4AF37">ストレッチ</text>
+      <line x1="720" y1="16" x2="742" y2="16" stroke="#C0392B" stroke-width="3"/>
+      <circle cx="731" cy="16" r="3" fill="#C0392B"/>
+      <text x="748" y="20" font-family="'Noto Serif JP',serif" font-size="11" font-weight="700" fill="#C0392B">ナリ</text>
+    </svg>
+  </div>
+
   <div class="toggle-buttons fade-in">
     <button class="toggle-btn active" id="btn-nari" onclick="switchScenario('nari')">ナリ</button>
     <button class="toggle-btn stretch-btn" id="btn-stretch" onclick="switchScenario('stretch')">ストレッチ</button>
@@ -1387,20 +1513,65 @@ h2.section-title::after {
     <div class="scenario-grid">
       <div class="scenario-item">
         <div class="scenario-item-title">SALES / 営業</div>
-        <p>認知領域は主導しているが電通からの奪取は実現できていない。独り立ちは3案件すべてで実現。既存運用での増額など一定成果はあるが、認知領域の大型受注には至っていない。</p>
+        <p>コープ共済の認知領域は主導しているが電通からの奪取は実現できていない。<br>独り立ちは3案件すべてで実現。既存運用での増額など一定成果はあるが、認知領域の大型受注には至っていない。</p>
       </div>
       <div class="scenario-item">
         <div class="scenario-item-title">AI PROMOTION / AI推進</div>
-        <p>第三本部の工数削減○時間を実現。第三本部内へのツール導入に貢献。数値は出ているが本部全体への広がりには至らず。</p>
+        <p>第三本部の全員に対しツール導入をリーチ。その結果、工数削減や生産性向上といった成果を実現。<br>第三本部内で定量的な成果は出ているが、本部規模での定量成果は実現せず。</p>
       </div>
     </div>
     <div class="scenario-bg-card">
       <div class="scenario-item-title">BACKGROUND / 背景・理由</div>
-      <p>巻き込み力・宣言力が弱いまま継続。守備は完璧だが攻めがない。成果はあるが「過程が見えにくい」人材になっている。</p>
+      <p>現時点の課題である「巻き込み力」・「宣言力」が弱いまま...守備は完璧だが攻めがない。<br>かつ成果はあるが「成果を出すまでの過程が見えにくい」人材になっていると想定した。</p>
     </div>
     <div class="scenario-diff-card">
       <div class="scenario-item-title">TURNING POINT / ナリになる分岐点</div>
-      <p>宣言力・巻き込み力が弱いまま継続した場合。成果を出しても「過程が見えにくい」人材になる。機会は来ても自ら仕掛けない選択が積み重なっていく。</p>
+      <div class="turning-point-grid">
+        <div class="tp-col">
+          <div class="tp-col-title">営業としての<br>実力</div>
+          <div class="tp-section-label">成立要件</div>
+          <ul class="tp-items">
+            <li>一人前化</li>
+            <li>独自の武器を持つ</li>
+            <li>横展開</li>
+          </ul>
+          <div class="tp-section-label">機会</div>
+          <ul class="tp-items">
+            <li>様々な状況の案件を担当</li>
+            <li>3案件以上セット</li>
+          </ul>
+        </div>
+        <div class="tp-col">
+          <div class="tp-col-title">組織からの<br>応援</div>
+          <div class="tp-section-label">成立要件</div>
+          <ul class="tp-items">
+            <li>ボード陣</li>
+            <li>マネージャー陣</li>
+            <li>プレイヤー陣</li>
+          </ul>
+          <div class="tp-section-label">機会</div>
+          <ul class="tp-items">
+            <li>業務課題ヒアリング（営業）<br>組織課題ヒアリング（局長）</li>
+            <li>毎出勤ごとの発信（日報＋AI）</li>
+            <li>成果を共有する場</li>
+          </ul>
+        </div>
+        <div class="tp-col">
+          <div class="tp-col-title">役員・統括との<br>接点</div>
+          <div class="tp-section-label">成立要件</div>
+          <ul class="tp-items">
+            <li>顔・名前を覚えてもらう</li>
+            <li>深い認知をもっていただく</li>
+            <li>賞推薦いただく</li>
+          </ul>
+          <div class="tp-section-label">機会</div>
+          <ul class="tp-items">
+            <li>伊藤士竜＝AI人材の認知PR</li>
+            <li>局長・統括から役員に成果共有</li>
+            <li>局長・統括と一緒に推薦依頼</li>
+          </ul>
+        </div>
+      </div>
     </div>
     <div class="result-tags" style="margin-top:24px;">
       <span class="result-tag nari-award">全社新人賞　候補止まり</span>
@@ -1420,25 +1591,25 @@ h2.section-title::after {
     <div class="scenario-grid">
       <div class="scenario-item">
         <div class="scenario-item-title">SALES / 営業</div>
-        <p>コープの認知領域を全部奪取。6月1週目の認知提案（4,000万〜）からジョインし、来Qの提案からフロントとして予算獲得・積み上げ。別軸で単月2〜3億規模の運用金額を達成。担当3案件（コープ・N社・F社）すべてで完全フロントとして独り立ち。</p>
+        <p>コープの認知領域を全部奪取。6月1週目の認知提案（4,000万〜）からジョインし、来Qの提案からフロントとして予算獲得・積み上げ。<br>別軸で単月2〜3億規模の運用金額を達成。<br>担当3案件（コープ共済・第一ネオ生命・ふづき法律事務所）すべてで完全フロントとして独り立ち。</p>
       </div>
       <div class="scenario-item">
         <div class="scenario-item-title">AI PROMOTION / AI推進</div>
-        <p>第3本部全体の生産性向上をAIで実現。第三本部の工数削減○時間＋本部全体へのツール導入に貢献。「間違いなくベストコントリビューター賞を取る」と周囲から認識されている状態。</p>
+        <p>第3本部全体の生産性向上をAIで実現。第三本部の工数削減や生産性向上を本部でも圧倒的な定量成果で達成＋本部全体へのツール導入に貢献。「間違いなくベストコントリビューター賞を取る」と周囲から認識されている状態となっている。</p>
       </div>
     </div>
     <div class="scenario-bg-card" style="border-left-color:var(--gold); border-color:rgba(212,175,55,0.2);">
       <div class="scenario-item-title" style="color:var(--gold);">BACKGROUND / 背景・理由</div>
-      <p>「最強営業マン × AI大臣」のビジョンを体現。積極的コミュニケーション・中長期視点・「教える」から「仕掛ける」への転換が全部噛み合った先にある。</p>
+      <p>「最強営業マン × AI大臣」のビジョンを最大限体現できた時の理想で想像した。<br>積極的な部署を問わない巻き込み・中長期的な視点での宣言力を実行した先に、両軸での成果最大化が見えてくると想定。</p>
     </div>
     <div class="scenario-diff-card">
       <div class="scenario-item-title">TURNING POINT / ストレッチを実現する分岐点</div>
-      <p>宣言して動く・巻き込んで仕掛ける、この2点が噛み合ったとき。認知提案への主体的参戦を継続し、AI推進を「全社の顔」として可視化しつつ、チームを動かし続けた先にある。</p>
+      <p>宣言して動く・巻き込んで仕掛ける、この2点が噛み合ったとき。かつナリの機会で成立要件を満たせていること。</p>
     </div>
     <div class="result-tags" style="margin-top:24px;">
-      <span class="result-tag award">全社新人賞　受賞</span>
-      <span class="result-tag award">本部ベストルーキー　受賞</span>
-      <span class="result-tag award">ベストコントリビューター賞　受賞</span>
+      <span class="result-tag award">10月：全社新人賞　受賞</span>
+      <span class="result-tag award">12月：本部ベストルーキー　受賞</span>
+      <span class="result-tag award">4月：ベストコントリビューター賞　受賞</span>
       <span class="result-tag rank">2年目マネージャー昇進（最速タイ）</span>
     </div>
   </div>
@@ -1454,19 +1625,15 @@ h2.section-title::after {
   <div class="impression-grid">
     <div class="impression-card nari-card fade-in fade-in-delay-1">
       <div class="impression-card-label">NARI ／ ナリ</div>
-      <div class="impression-quote">
-      悪くはない。でも入社2ヶ月目から大して変わっていないじゃないか、が怖い
-      </div>
+      <div class="impression-quote">悪くはない。でも入社2ヶ月目から大して変わっていないじゃないか、が怖い</div>
     </div>
     <div class="impression-card stretch-card fade-in fade-in-delay-2">
       <div class="impression-card-label">STRETCH ／ ストレッチ</div>
-      <div class="impression-quote">
-        純粋にワクワク。意志ある提案でコープ認知領域を奪取できたときの可能性、AI推進で第三本部という良い組織をより良くできている状態が純粋にうれしい
-      </div>
+      <div class="impression-quote">純粋にワクワク。意志ある提案でコープ認知領域を奪取できたときの可能性、AI推進で第三本部という良い組織をより良くできている状態が純粋にうれしい</div>
     </div>
   </div>
 
-  <div class="bridge-text fade-in">だから、<span>戦略を設計した。</span></div>
+  <div class="bridge-text fade-in">ストレッチ状態で1年後いるために、<span>戦略を設計。</span></div>
 </section>
 
 <div class="ink-divider"></div>
@@ -1474,7 +1641,7 @@ h2.section-title::after {
 <!-- ===== SECTION 5: 表彰戦略 ===== -->
 <section id="challenge2">
   <div class="section-label fade-in">課題 ②</div>
-  <h2 class="section-title fade-in">表彰獲得戦略 ── 逆算設計</h2>
+  <h2 class="section-title fade-in">表彰獲得戦略</h2>
 
   <!-- 本命宣言 -->
   <div class="declaration-banner fade-in">
@@ -1487,22 +1654,22 @@ h2.section-title::after {
 
   <!-- なぜこの賞を本命にするのか -->
   <div class="why-section fade-in">
-    <div class="why-header">なぜ、4月のベストコントリビューター賞を本命にするのか</div>
+    <div class="why-header">4月のベストコントリビューター賞を本命にする背景</div>
     <div class="why-grid">
       <div class="why-card">
         <div class="why-num">01</div>
-        <div class="why-q">なぜ3フェーズで逆算するのか？</div>
-        <p>4月が本命。10月・12月は布石であり、リカバリーの保険でもある。確実に取るために、2軸のプッシュポイントを逆算して積み上げる。</p>
+        <div class="why-q">なぜ3フェーズで逆算するのか</div>
+        <p>4月が本命。10月・12月は布石であり、ベストコントリビューター賞を取るための手段でもある。確実に取るために、2軸それぞれのプッシュポイントを逆算して積み上げる。</p>
       </div>
       <div class="why-card">
         <div class="why-num">02</div>
         <div class="why-q">なぜ2軸（営業×AI）なのか？</div>
-        <p>「最強営業マン×AI大臣」のビジョン。「感動（感じて動く）」「誰かの幸せが自分の幸せ」という価値観から来る必然の選択。</p>
+        <p>「最強営業マン×AI大臣」のビジョンを体現したいため。<br>行動のモチベーションとして「感動（感じて動く）」「誰かの幸せが自分の幸せ」という価値観があり、この価値観を体現するビジョン設計。</p>
       </div>
       <div class="why-card">
         <div class="why-num">03</div>
         <div class="why-q">第三本部での評価基準は？</div>
-        <p>売上額より伸長率・PL貢献で評価される。金額一本勝負ではなく、定量＋定性の複合アピール。月間MVPを積み重ね、プッシュしてもらう人を先に作る。</p>
+        <p>過去傾向より、伸長率・PL貢献で評価されやすい。<br>金額一本勝負ではなく、定量＋定性の複合で積み上げる必要がある。本部月間MVPから実績を積み重ね、推薦してもらえる状態を作る。</p>
       </div>
     </div>
   </div>
@@ -1516,7 +1683,7 @@ h2.section-title::after {
         <div class="phase-num">Phase 1</div>
         <div class="phase-center">
           <div class="phase-timing">〜 2026年10月</div>
-          <div class="phase-award">全社新人賞</div>
+          <div class="phase-award">本部月間MVP</div>
         </div>
         <div class="phase-stretch role-fuse">布石①</div>
       </button>
@@ -1524,17 +1691,17 @@ h2.section-title::after {
         <div class="phase-content-grid">
           <div class="phase-content-card">
             <div class="phase-content-card-title">SALES / 営業</div>
-            <p>6月1週目のコープ認知提案（4,000万〜）を起点に受注・増額を主導。担当3案件で9月までに完全フロント化を達成。</p>
+            <p>6月1週目のコープ認知提案（4,000万〜）を起点に受注・増額を主導。担当3案件で7月までに完全フロント化を達成。</p>
           </div>
           <div class="phase-content-card">
             <div class="phase-content-card-title">AI PROMOTION / AI推進</div>
-            <p>第三本部全体の生産性向上の数値成果を創出。工数削減○時間・施策実施率100%を達成し事例化。</p>
+            <p>第三本部全体の生産性向上の数値成果を創出。生産性改善・工数削減など定量の成果を実現、施策実施率100%を達成し事例化。</p>
           </div>
         </div>
         <div class="phase-mikata">
           <div class="phase-mikata-label">受賞時の理想状態 / IDEAL STATE</div>
-          <p>【定量】認知配信○○万円　＋　○領域を○ヶ月で完全フロント化　＋　AI施策実施率100%<br>
-          【定性】「ジョイン数ヶ月で複数領域をキャッチアップした、新卒離れした動き」</p>
+          <p>【定量】認知配信4000万円~　＋　9領域をジョイン4ヶ月で完全フロント化　＋　生産性改善・工数削減など定量の成果<br>
+          【定性】「ジョイン数ヶ月で複数領域をキャッチアップ&横軸で第三本部全体の生産性を爆上げした、新卒離れした動き」</p>
         </div>
       </div>
     </div>
@@ -1544,7 +1711,7 @@ h2.section-title::after {
       <button class="phase-trigger" onclick="togglePhase(this)" aria-expanded="false">
         <div class="phase-num">Phase 2</div>
         <div class="phase-center">
-          <div class="phase-timing">〜 2026年12月</div>
+          <div class="phase-timing">2026年12月</div>
           <div class="phase-award">本部ベストルーキー賞</div>
         </div>
         <div class="phase-stretch role-fuse">布石②</div>
@@ -1553,16 +1720,16 @@ h2.section-title::after {
         <div class="phase-content-grid">
           <div class="phase-content-card">
             <div class="phase-content-card-title">SALES / 営業</div>
-            <p>コープ認知領域でさらに積み上げ（最大5億への道筋）。単月2〜3億規模の運用金額を積み上げ、センターピンの成果を確固たるものにする。</p>
+            <p>コープ認知領域でさらに積み上げ（最大5億奪取）。複数案件で単月2〜3億規模の運用、既存増額＋認知奪取で圧倒的な成果。</p>
           </div>
           <div class="phase-content-card">
             <div class="phase-content-card-title">AI PROMOTION / AI推進</div>
-            <p>第3本部内AI基盤完成→ネクスト本部への横展開開始。全社発表の場に登壇し、AI推進の顔として認知を獲得。</p>
+            <p>第3本部内AI基盤完成→本部への横展開。本部全体を巻き込んだ企画や勉強会を実施し、AI推進の顔として認知を獲得。</p>
           </div>
         </div>
         <div class="phase-mikata">
           <div class="phase-mikata-label">この賞の意味 / WHY THIS MATTERS</div>
-          <p>月間MVP・本部ベストルーキーを確実に取ることで、4月に向けてプッシュしてくれる人を本部内に作る。</p>
+          <p>月間MVP・本部ベストルーキーを確実に取ることで、4月に向けてプッシュしてくれる人を役員/本部内に作る。</p>
         </div>
       </div>
     </div>
@@ -1572,7 +1739,7 @@ h2.section-title::after {
       <button class="phase-trigger" onclick="togglePhase(this)" aria-expanded="false">
         <div class="phase-num">Phase 3</div>
         <div class="phase-center">
-          <div class="phase-timing">〜 2027年4月</div>
+          <div class="phase-timing">2027年4月</div>
           <div class="phase-award">全社ベストコントリビューター賞</div>
         </div>
         <div class="phase-stretch role-honmei">本　命</div>
@@ -1702,21 +1869,30 @@ document.querySelectorAll('.fade-in, .fade-in-left, .fade-in-right').forEach(el 
 
 // ===== TOGGLE: ナリ / ストレッチ =====
 function switchScenario(type) {
-  const btnNari = document.getElementById('btn-nari');
+  const btnNari    = document.getElementById('btn-nari');
   const btnStretch = document.getElementById('btn-stretch');
-  const panelNari = document.getElementById('panel-nari');
+  const panelNari    = document.getElementById('panel-nari');
   const panelStretch = document.getElementById('panel-stretch');
+  const chartWrap  = document.getElementById('growth-chart-wrap');
 
   if (type === 'nari') {
     btnNari.classList.add('active');
     btnStretch.classList.remove('active');
     panelNari.classList.add('active');
     panelStretch.classList.remove('active');
+    if (chartWrap) {
+      chartWrap.classList.remove('chart-active-stretch');
+      chartWrap.classList.add('chart-active-nari');
+    }
   } else {
     btnStretch.classList.add('active');
     btnNari.classList.remove('active');
     panelStretch.classList.add('active');
     panelNari.classList.remove('active');
+    if (chartWrap) {
+      chartWrap.classList.remove('chart-active-nari');
+      chartWrap.classList.add('chart-active-stretch');
+    }
   }
 }
 
