@@ -1211,19 +1211,59 @@ h2.section-title::after {
 /* ===== AWARD COMMENT ===== */
 .award-comment-section {
   margin-top: 56px;
-  border: 2px dashed rgba(212,175,55,0.35);
-  padding: 40px 48px;
-  background: rgba(212,175,55,0.03);
+  border: 2px solid rgba(212,175,55,0.5);
+  padding: 52px 56px;
+  background: linear-gradient(135deg, rgba(212,175,55,0.08) 0%, rgba(192,57,43,0.06) 100%);
   text-align: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 40px rgba(212,175,55,0.1), inset 0 0 60px rgba(212,175,55,0.04);
+}
+.award-comment-section::before {
+  content: '「';
+  position: absolute;
+  top: 8px;
+  left: 24px;
+  font-family: 'Noto Serif JP', serif;
+  font-size: 120px;
+  font-weight: 900;
+  color: rgba(212,175,55,0.08);
+  line-height: 1;
+  pointer-events: none;
+}
+.award-comment-section::after {
+  content: '」';
+  position: absolute;
+  bottom: 8px;
+  right: 24px;
+  font-family: 'Noto Serif JP', serif;
+  font-size: 120px;
+  font-weight: 900;
+  color: rgba(212,175,55,0.08);
+  line-height: 1;
+  pointer-events: none;
 }
 .award-comment-label {
   font-family: 'Noto Serif JP', serif;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.4em;
+  letter-spacing: 0.5em;
   color: var(--gold);
-  margin-bottom: 20px;
-  text-shadow: 0 0 12px var(--shadow-gold);
+  margin-bottom: 28px;
+  text-shadow: 0 0 16px var(--shadow-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+.award-comment-label::before,
+.award-comment-label::after {
+  content: '';
+  display: inline-block;
+  width: 40px;
+  height: 1px;
+  background: var(--gold);
+  opacity: 0.6;
 }
 .award-comment-text {
   font-family: 'Noto Serif JP', serif;
@@ -1234,9 +1274,14 @@ h2.section-title::after {
 }
 .award-comment-placeholder {
   font-family: 'Noto Serif JP', serif;
-  font-size: 15px;
-  color: rgba(212,175,55,0.4);
-  letter-spacing: 0.15em;
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--gold-light);
+  line-height: 2;
+  letter-spacing: 0.05em;
+  text-shadow: 0 0 30px var(--shadow-gold), 2px 2px 0 rgba(0,0,0,0.3);
+  position: relative;
+  z-index: 1;
 }
 
 /* ===== GROWTH CHART ===== */
@@ -1720,11 +1765,11 @@ h2.section-title::after {
         <div class="phase-content-grid">
           <div class="phase-content-card">
             <div class="phase-content-card-title">SALES / 営業</div>
-            <p>コープ認知領域でさらに積み上げ（最大5億奪取）。複数案件で単月2〜3億規模の運用、既存増額＋認知奪取で圧倒的な成果。</p>
+            <p>コープ共済のTVCM認知領域で電通からの奪取によりさらに積み上げ（最大5億奪取）。複数案件で単月2〜3億規模の運用、既存増額＋認知奪取で圧倒的な成果。</p>
           </div>
           <div class="phase-content-card">
             <div class="phase-content-card-title">AI PROMOTION / AI推進</div>
-            <p>第3本部内AI基盤完成→本部への横展開。本部全体を巻き込んだ企画や勉強会を実施し、AI推進の顔として認知を獲得。</p>
+            <p>第3本部内AI基盤完成→本部への横展開。本部全体を巻き込んだ企画や勉強会を実施し、定量成果を創出。AI推進の顔として認知を獲得。</p>
           </div>
         </div>
         <div class="phase-mikata">
@@ -1748,17 +1793,16 @@ h2.section-title::after {
         <div class="phase-content-grid">
           <div class="phase-content-card">
             <div class="phase-content-card-title">SALES / 営業【定量】</div>
-            <p>コープの認知領域（5億円規模）全部奪取。単月2〜3億規模を達成。</p>
+            <p>コープ共済の全予算奪取（年間15億円規模）。<br>Before：2026年4月 シェア60%10億円 <br>After：2027年1~3月 シェア100%15億円！！</p>
           </div>
           <div class="phase-content-card">
             <div class="phase-content-card-title">AI PROMOTION / AI推進【定量】</div>
-            <p>第三本部の工数削減○時間＋本部全体へのツール導入を完遂。役員陣から「第三本部のAI推進」が語られる状態に。</p>
+            <p>本部全体のAIツール導入を完遂。第三本部の年度超過達成だけでなく、事業に幅広く貢献。役員陣から「第三本部のAI大臣・本部のAI推進＝伊藤士竜」が語られる状態に。</p>
           </div>
         </div>
         <div class="phase-mikata">
           <div class="phase-mikata-label">受賞時の理想状態 / IDEAL STATE</div>
-          <p>【定性】「営業×AI推進の二刀流で本部に足跡を残した新人」として全社評価。<br>
-          2年目マネージャー昇進（第三本部最速タイ）。</p>
+          <p>【定性】「営業×AI推進の二刀流で本部に足跡を残した新人」として全社評価。</p>
         </div>
       </div>
     </div>
@@ -1767,7 +1811,7 @@ h2.section-title::after {
   <!-- 受賞時のコメント -->
   <div class="award-comment-section fade-in">
     <div class="award-comment-label">受賞時のコメント / AWARD COMMENT</div>
-    <div class="award-comment-placeholder">※ 後日記入</div>
+    <div class="award-comment-placeholder">第3本部の主要案件でのシェア100%達成と本部AI推進を兼務している二刀流人材！！ <br>第三本部の年度超過達成だけでなく、本部全体の定量成果にも貢献し、事業に幅広く貢献！ </div>
   </div>
 </section>
 
@@ -1776,7 +1820,7 @@ h2.section-title::after {
 <!-- ===== SECTION 6: 締め ===== -->
 <section id="closing">
   <div class="closing-text fade-in">
-    どちらの士竜になるか、<br>見ていてください。
+    1年後、<br>ストレッチの伊藤士竜と会いましょう。
   </div>
   <div class="closing-name fade-in fade-in-delay-1">伊 藤 士 竜</div>
   <div class="closing-stamp">
